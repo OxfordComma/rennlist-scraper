@@ -2,6 +2,7 @@ var express = require('express');
 var axios = require('axios');
 var $ = require('cheerio');
 var router = express.Router();
+var creds = require('../credentials.json')
 
 const baseUrl = 'https://rennlist.com/forums/market/vehicles/porsche-2/2005-2012?sortby=dateline_desc&intent%5B2%5D=2&modelid%5B0%5D=m10&modelid%5B1%5D=m2834&status%5B0%5D=0&type%5B0%5D=1&filterstates%5Bvehicle_sellertype%5D=0&filterstates%5Bvehicle_types%5D=1&filterstates%5Bvehicle_statuses%5D=1&filterstates%5Bvehicle_condition%5D=0&filterstates%5Bvehicle_price%5D=0&filterstates%5Bvehicle_mileage%5D=0&filterstates%5Bvehicle_location%5D=0&filterstates%5Bvehicle_color%5D=0&filterstates%5Bvehicle_vehicletype%5D=0&filterstates%5Bvehicle_engine%5D=0&filterstates%5Bvehicle_transmission%5D=0&page='
 const dbName = "cl_cars"
@@ -89,7 +90,7 @@ let getMaxNumOfRennlistPages = () => {
 
 let getMongoClient = () => {
 	const MongoClient = require('mongodb').MongoClient;
-	const uri = process.env.uri;
+	const uri = process.env.uri || creds['mongo_uri'];
 	const client = new MongoClient(uri, { useNewUrlParser: true });
 	return client
 }
