@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	script(src='https://d3js.org/d3.v4.js')
+	script(src='https://d3js.org/d3-fetch.v1.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js')
+	script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
+
+	div#dashboard
+	script(type='text/javascript' src='/997.js')
+	script.
+		function LinkFormatter(value, row, index) { 
+			return "<a href='"+row.url+"'>"+row.info+"</a>";
+		}
+		
+	link(href='https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css', rel='stylesheet')
+	script(src='https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js')
+	script(src='https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/filter-control/bootstrap-table-filter-control.min.js')
+
+	table#table(data-url='', data-filter-control='true', data-show-search-clear-button='true')
+		thead
+			tr
+				th(data-field='selected' data-checkbox='true') Selected
+				th(data-field='year', data-sortable='true') Year
+				th(data-field='make') Make
+				th(data-field='model', data-filter-control='select') Model
+				th(data-field='transmission', data-filter-control='select') Transmission     
+				th(data-field='price', data-sortable='true') Price     
+				th(data-field='url' data-formatter='LinkFormatter') Info
+				//- th(data-field='info' ) Info
+				th(data-field='description') Description
+				th(data-field='post_time' data-sortable='true') Post Time
