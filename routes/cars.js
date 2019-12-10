@@ -9,9 +9,10 @@ const dbName = "cl_cars"
 const collectionName = "porsche"
 
 let getPageUrls = (pageUrl) => {
-	// pageUrl = baseUrl + page.toString()
+	pageUrl = baseUrl + page.toString()
 	return axios.get(pageUrl)
 		.then(response => {
+			console.log(response)
 			return $('#search-result-vehicle h3.title > a', response.data)
 				.map(function() { return $(this)[0].attribs.href }).get();
 		})
@@ -91,6 +92,7 @@ let getMaxNumOfRennlistPages = () => {
 let getMongoClient = () => {
 	const MongoClient = require('mongodb').MongoClient;
 	const uri = process.env.uri || require('../credentials.json')['mongo_uri'];
+	console.log(uri)
 	const client = new MongoClient(uri, { useNewUrlParser: true });
 	return client
 }
