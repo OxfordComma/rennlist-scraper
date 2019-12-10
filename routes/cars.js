@@ -107,12 +107,13 @@ let getMongoData = () => {
 				resolve(db.db(dbName).collection(collectionName).find().toArray());
 			}
 		});
-	});
+	}).catch(err => console.log(err));
 }
 
 
 let updateAll = () => {
-	return getMaxNumOfRennlistPages().then(maxPages => {
+	return getMaxNumOfRennlistPages()
+		.catch(err => console.log(err)).then(maxPages => {
 		var urls = []
 		// maxPages = 1
 		for (var i = 1; i <= maxPages; i++){
@@ -144,7 +145,8 @@ let updateAll = () => {
 }
 
 let addMostRecent = () => {
-	return getMaxNumOfRennlistPages().then(maxPages => {
+	return getMaxNumOfRennlistPages()
+		.catch(err => console.log(err)).then(maxPages => {
 		var urls = []
 		for (var i = 1; i <= maxPages; i++){
 			urls.push(baseUrl + i.toString())
@@ -194,14 +196,14 @@ router.get('/porsche/data/upload/recent', function(req, res, next) {
 router.get('/porsche/data/upload/all', function(req, res, next) {
 	updateAll().then(carList => {
 		res.json(carList)
-	})	
+	}).catch(err => console.log(err))
 })
 
 router.get('/porsche/data/download', function(req, res, next) {
 	getMongoData().then(data => {
 		// console.log('data')
 		res.json(data)
-	})
+	}).catch(err => console.log(err))
 });
 
 module.exports = router;
