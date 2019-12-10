@@ -201,7 +201,7 @@ router.get('/porsche/data/upload/all', function(req, res, next) {
 
 router.get('/porsche/data/download', function(req, res, next) {
 	getMongoData().then(data => {
-		// console.log('data')
+		console.log('data')
 		res.json(data)
 	}).catch(err => console.log(err))
 });
