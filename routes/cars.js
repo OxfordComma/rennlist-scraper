@@ -187,17 +187,17 @@ router.get('/', function(req, res, next) {
 	})
 });
 
-router.get('/porsche/data/upload/recent', function(req, res, next) {
-	addMostRecent().then(carList => {
-		res.json(carList)
-	})
-})
+// router.get('/porsche/data/upload/recent', function(req, res, next) {
+// 	addMostRecent().then(carList => {
+// 		res.json(carList)
+// 	})
+// })
 
-router.get('/porsche/data/upload/all', function(req, res, next) {
-	updateAll().then(carList => {
-		res.json(carList)
-	}).catch(err => console.log(err))
-})
+// router.get('/porsche/data/upload/all', function(req, res, next) {
+// 	updateAll().then(carList => {
+// 		res.json(carList)
+// 	}).catch(err => console.log(err))
+// })
 
 router.get('/porsche/data/download', function(req, res, next) {
 	getMongoData().then(data => {
