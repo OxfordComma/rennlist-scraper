@@ -17,16 +17,17 @@ block content
 	script(src='https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js')
 	script(src='https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/filter-control/bootstrap-table-filter-control.min.js')
 
-	table#table(data-url='', data-filter-control='true', data-show-search-clear-button='true')
-		thead
-			tr
-				th(data-field='selected' data-checkbox='true') Selected
-				th(data-field='year', data-sortable='true') Year
-				th(data-field='make') Make
-				th(data-field='model', data-filter-control='select') Model
-				th(data-field='transmission', data-filter-control='select') Transmission     
-				th(data-field='price', data-sortable='true') Price     
-				th(data-field='url' data-formatter='LinkFormatter') Info
-				//- th(data-field='info' ) Info
-				th(data-field='description') Description
-				th(data-field='post_time' data-sortable='true') Post Time
+	div.container-fluid
+		table#table(data-url='', data-filter-control='true', data-show-search-clear-button='false')
+			thead
+				tr
+					th(data-field='selected' data-checkbox='true') Selected
+					th(data-field='year', data-sortable='true') Year
+					th(data-field='make') Make
+					th(data-field='model', data-filter-control='select') Model
+					th(data-field='transmission', data-filter-control='select') Transmission     
+					th(data-field='price', data-sortable='true') Price     
+					th(data-field='url' data-formatter='LinkFormatter') Info
+					//- th(data-field='info' ) Info
+					//- th(data-field='detailed_description' width='500') Description
+					th(data-field='post_time' data-sortable='true') Post Time
