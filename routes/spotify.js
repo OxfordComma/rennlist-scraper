@@ -7,7 +7,7 @@ var SpotifyWebApi = require('spotify-web-api-node');
 
 try {
 	var creds = require('./spotify_credentials.json')
-} catch (err) => {
+} catch {
 	console.log(err)
 }
 
