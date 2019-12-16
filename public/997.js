@@ -171,8 +171,7 @@
 	        chartData = fullData.filter(d => tableData.includes(d));
 	        render();
 	      },
-	      // 'onAll': a => console.log(a)
-	    } ); 
+	    }); 
 	  });
 	  render();
 	  colorScale 

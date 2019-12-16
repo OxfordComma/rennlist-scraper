@@ -7,7 +7,7 @@ import {
 import { scatterplot } from './scatterplot';
 
 let LinkFormatter = (value, row, index) => {
-  console.log(value)
+  // console.log(value)
   return "<a href='"+row.url+"'>"+row.info+"</a>";
 }
 const colorScale = scaleOrdinal();
@@ -73,8 +73,7 @@ d3.json('/cars/porsche/data/download').then(porscheData => {
         chartData = fullData.filter(d => tableData.includes(d))
         render()
       },
-      // 'onAll': a => console.log(a)
-    } ) 
+    }) 
   })
   render();
   colorScale 
