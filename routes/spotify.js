@@ -175,7 +175,7 @@ router.get('/update/spotifyapi/auth', function(req, res, next) {
 	  }).then(tokens => {
 	  	spotifyAuth.setAccessToken(tokens['access_token'])
 	  	spotifyAuth.setRefreshToken(tokens['refresh_token'])
-			res.redirect('/spotify/update/onepage')
+			res.redirect('spotify/update/onepage')
 		})
 	} else {
 	  res.send("No code provided")
