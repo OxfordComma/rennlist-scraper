@@ -17,9 +17,9 @@ const google = googleapis.google
 var googleAuth, spotifyAuth;
 
 const googleConfig = {
-  clientId: process.env.google_client_id || creds['google']['client_id'], // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
-  clientSecret: process.env.google_client_secret || creds['google']['client_secret'], // e.g. _ASDFA%DFASDFASDFASD#FAD-
-  redirect: process.env.google_redirect_uri || creds['google']['redirect_uri'] // this must match your google api settings
+  clientId:  creds['google']['client_id'] || process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
+  clientSecret: creds['google']['client_secret'] || process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
+  redirect: creds['google']['redirect_uri'] || process.env.google_redirect_uri // this must match your google api settings
 };
 
 function createGoogleConnection() {
@@ -32,9 +32,9 @@ function createGoogleConnection() {
 
 function createSpotifyConnection() {
 	return new SpotifyWebApi({
-	  clientId: process.env.spotify_client_id || creds['spotify']['client_id'],
-	  clientSecret: process.env.spotify_client_secret || creds['spotify']['client_secret'],
-	  redirectUri: process.env.spotify_redirect_uri || creds['spotify']['redirect_uri']
+	  clientId: creds['spotify']['client_id'] || process.env.spotify_client_id,
+	  clientSecret: creds['spotify']['client_secret'] || process.env.spotify_client_secret,
+	  redirectUri: creds['spotify']['redirect_uri'] || process.env.spotify_redirect_uri
 	});
 }
 
