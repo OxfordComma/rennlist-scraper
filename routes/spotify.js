@@ -7,6 +7,7 @@ var SpotifyWebApi = require('spotify-web-api-node');
 
 var creds = require('./spotify_credentials.json')
 
+
 const google = googleapis.google
 var googleAuth, spotifyAuth;
 
@@ -68,6 +69,8 @@ function getSpotifyApi(auth) {
 }
 
 router.get('/update/onepage', function(req, res, next) {
+	var playlistUri = creds['spotify']['playlist_uri']
+
 	if (!googleAuth) {
 		res.redirect(urlGoogle())
 	}
@@ -96,13 +99,13 @@ router.get('/update/onepage', function(req, res, next) {
   	const spotifyPromise = new Promise((resolve, reject) => {
   		var spotifyApi = spotifyAuth
 			var options = { limit: 100, offset: 0 }
-			spotifyApi.getPlaylistTracks('1lTdz0bk3wElDpkq1WsM0H', options).then((data) => {
+			spotifyApi.getPlaylistTracks(playlistUri, options).then((data) => {
 		  	var tracks = data.body.items//.map(i => i.track.artists[0].name + ' - ' + i.track.name.split(' - ')[0])
 		  	if (data.body.next) {
 		  		var numQueries = Math.ceil(data.body.total/options.limit)
 		  		var queries = []
 		  		for (var i=1; i<numQueries; i++) {
-		  			queries.push(spotifyApi.getPlaylistTracks('1lTdz0bk3wElDpkq1WsM0H', 
+		  			queries.push(spotifyApi.getPlaylistTracks(playlistUri, 
 	  					{ limit: 100, offset: 100*i }
   					))
 	  			}
@@ -134,8 +137,8 @@ router.get('/update/onepage', function(req, res, next) {
 			))
 		})
 		.then(searchResults => { 
-			spotifyAuth.addTracksToPlaylist('1lTdz0bk3wElDpkq1WsM0H', searchResults.filter(s => s !== undefined).map(s => s.uri))
-			console.log(searchResults)
+			spotifyAuth.addTracksToPlaylist(playlistUri, searchResults.filter(s => s !== undefined).map(s => s.uri))
+			// console.log(searchResults)
 		})
 	}
 })
