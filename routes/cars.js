@@ -12,7 +12,6 @@ router.get('/porsche', function(req, res, next) {
 	})
 });
 
-<<<<<<< HEAD
 // router.get('/porsche/data/upload/recent', function(req, res, next) {
 // 	addMostRecent().then(carList => {
 // 		res.json(carList)
@@ -24,20 +23,6 @@ router.get('/porsche', function(req, res, next) {
 // 		res.json(carList)
 // 	}).catch(err => console.log(err))
 // })
-
-=======
-router.get('/porsche/data/upload/recent', function(req, res, next) {
-	scraper.addMostRecent(scraper.getMongoClient()).then(carList => {
-		res.json(carList)
-	})
-})
-
-router.get('/porsche/data/upload/all', function(req, res, next) {
-	scraper.updateAll(scraper.getMongoClient()).then(carList => {
-		res.json(carList)
-	}).catch(err => console.log(err))
-})
->>>>>>> master
 
 router.get('/porsche/data/download', function(req, res, next) {
 	scraper.getMongoData(scraper.getMongoClient()).then(data => {
