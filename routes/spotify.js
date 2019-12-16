@@ -5,7 +5,11 @@ var router = express.Router();
 var googleapis = require('googleapis')
 var SpotifyWebApi = require('spotify-web-api-node');
 
-var creds = require('./spotify_credentials.json')
+var creds = try {
+	require('./spotify_credentials.json')
+} catch (err) => {
+	console.log(err)
+}
 
 
 const google = googleapis.google
