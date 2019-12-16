@@ -6,11 +6,7 @@ var logger = require('morgan');
 
 // var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-<<<<<<< HEAD
-var carsRouter = require('./routes/cars')
-=======
 var carsRouter = require('./routes/cars');
->>>>>>> master
 var spotifyRouter = require('./routes/spotify')
 
 var app = express();
