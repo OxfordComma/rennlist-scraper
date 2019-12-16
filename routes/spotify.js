@@ -73,7 +73,8 @@ function getSpotifyApi(auth) {
 }
 
 router.get('/update/onepage', function(req, res, next) {
-	var playlistUri = creds['spotify']['playlist_uri']
+	// var playlistUri = creds['spotify']['playlist_uri']
+	var playlistUri = process.env.playlist_url
 
 	if (!googleAuth) {
 		res.redirect(urlGoogle())
