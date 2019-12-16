@@ -1,4 +1,16 @@
 var creds = require('./credentials.json')
+var axios = require('axios')
+
+let getMaxNumOfRennlistPages = () => {
+		return axios.get(creds.baseUrl+'1')
+			.then(response => {
+				var pages = $('.tcell .vbmenu_control', response.data)
+					.map(function() { return $(this).text() }).get();
+				var maxPages = +pages[0].split(' ')[3]
+				console.log('maxPages: ' + maxPages.toString())
+				return maxPages
+			})
+	}
 
 module.exports = {
 	getPageUrls: (pageUrl) => {
@@ -61,24 +73,11 @@ module.exports = {
 				turbo: thread_title[0].match(/turbo|99\dtt/i) ? true : false,
 				cabriolet: thread_title[0].match(/cab|vert/i) ? true : false,
 				last_updated: new Date()
-
 			}
 			console.log(car.info)
 
 			return car
 		})
-	},
-
-
-	getMaxNumOfRennlistPages: () => {
-		return axios.get(creds.baseUrl+'1')
-			.then(response => {
-				var pages = $('.tcell .vbmenu_control', response.data)
-					.map(function() { return $(this).text() }).get();
-				var maxPages = +pages[0].split(' ')[3]
-				console.log('maxPages: ' + maxPages.toString())
-				return maxPages
-			})
 	},
 
 
@@ -97,9 +96,7 @@ module.exports = {
 				if (err) {
 					reject(err);
 				} else {
-					// console.log(creds)
 					resolve(db.db(creds['db_name']).collection(creds['collection_name']).find().toArray());
-					// return db.db(creds.dbName).collection(creds.collectionName).find().toArray().then(p => console.log(p))
 				}
 			});
 		}).catch(err => console.log(err));
@@ -151,12 +148,12 @@ module.exports = {
 			// console.log(urls)
 			return Promise.all(urls.map(u => getPageUrls(u))).then(urls => urls.flat())
 		}).then(rennlistUrls => {
-			var client = getMongoClient()
+			// var client = getMongoClient()
 			return new Promise((response, reject) => {
 				client.connect(err => {
 					if (err) throw err;
-
-					const collection = client.db(creds.dbName).collection(creds.collectionName);
+					// console.log(creds)
+					const collection = client.db(creds['db_name']).collection(creds['collection_name']);
 					response(collection.distinct('url').then(mongoUrls => {
 
 						var urlsToAdd = rennlistUrls.filter(r => !mongoUrls.includes(r))
