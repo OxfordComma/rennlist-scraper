@@ -5,21 +5,20 @@ var router = express.Router();
 var googleapis = require('googleapis')
 var SpotifyWebApi = require('spotify-web-api-node');
 
-var creds
 try {
-	creds = require('./spotify_credentials.json')
-} catch {
-	creds = {}
+	var spotifyCreds =  require('./spotify_credentials.json')
+	var googleCreds = require('./google_creds.json')
 }
+catch {}
 
 
 const google = googleapis.google
 var googleAuth, spotifyAuth;
 
 const googleConfig = {
-  clientId:  creds['google']['client_id'] || process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
-  clientSecret: creds['google']['client_secret'] || process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
-  redirect: creds['google']['redirect_uri'] || process.env.google_redirect_uri // this must match your google api settings
+  clientId:  googleCreds['client_id'] || process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
+  clientSecret: googleCreds['client_secret'] || process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
+  redirect: googleCreds['redirect_uri'] || process.env.google_redirect_uri // this must match your google api settings
 };
 
 function createGoogleConnection() {
@@ -32,9 +31,9 @@ function createGoogleConnection() {
 
 function createSpotifyConnection() {
 	return new SpotifyWebApi({
-	  clientId: creds['spotify']['client_id'] || process.env.spotify_client_id,
-	  clientSecret: creds['spotify']['client_secret'] || process.env.spotify_client_secret,
-	  redirectUri: creds['spotify']['redirect_uri'] || process.env.spotify_redirect_uri
+	  clientId: spotifyCreds['client_id'] || process.env.spotify_client_id,
+	  clientSecret: spotifyCreds['client_secret'] || process.env.spotify_client_secret,
+	  redirectUri: spotifyCreds['redirect_uri'] || process.env.spotify_redirect_uri
 	});
 }
 
