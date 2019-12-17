@@ -46,7 +46,7 @@ function getGoogleConnectionUrl(auth) {
 }
 
 function getSpotifyConnectionUrl(auth) {
-	var scopes = ['playlist-modify-public']
+	var scopes = ['playlist-modify-public', 'user-read-recently-played']
   const url = auth.createAuthorizeURL(scopes)
   return url;
 }
@@ -71,6 +71,33 @@ function getGoogleDriveApi(auth) {
 function getSpotifyApi(auth) {
 	// return spotifyApi.
 }
+
+router.get('/recenttracks', function(req, res, next) {
+	if (!spotifyAuth) {
+		res.redirect(urlSpotify())
+	} 
+	else {
+		option = { limit: 50 }
+		spotifyApi.getMyRecentlyPlayedTracks(options).then((data) => {
+	  	var tracks = data.body.items//.map(i => i.track.artists[0].name + ' - ' + i.track.name.split(' - ')[0])
+	  	if (data.body.next) {
+	  		// var numQueries = Math.ceil(data.body.total/options.limit)
+	  		// var queries = []
+	  		// for (var i=1; i<numQueries; i++) {
+	  		// 	queries.push(spotifyApi.getMyRecentlyPlayedTracks( 
+  			// 		{ limit: 100, offset: 100*i }
+					// ))
+  			// }
+  			// resolve (Promise.all(queries).then(tks => {
+  			// 	return tracks.concat(tks.map(t => t.body.items)
+  			// 		.reduce((acc, curr) => acc.concat(curr)))
+  			// }))
+  		} else {
+  			resolve(tracks.sort())
+  		}
+	  }).catch(err => console.log(err))
+	}
+})
 
 router.get('/update/onepage', function(req, res, next) {
 	// var playlistUri = creds['spotify']['playlist_uri']
