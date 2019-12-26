@@ -3,3 +3,6 @@ npm-debug.log
 .DS_Store
 /*.env
 *credentials.json
+*.map
+.eslintrc.json
+*.pem

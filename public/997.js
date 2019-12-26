@@ -4,6 +4,8 @@
 	const scatterplot = (selection, props) => {
 		const {
 			data,
+			xLabel,
+			yLabel,
 			xDomain,
 			yDomain,
 			colorScale,
@@ -15,9 +17,10 @@
 		} = props;
 		
 
-		const xAxisLabel = 'year'; 
-		const yAxisLabel = 'price';
+		const xAxisLabel = xLabel; 
+		const yAxisLabel = yLabel;
 		
+
 		const gUpdate = selection.selectAll('g').data([null]);
 		const gEnter = gUpdate.enter().append('g');
 		const g = gUpdate.merge(gEnter);
@@ -32,6 +35,9 @@
 			.domain(yDomain)
 			.range([innerHeight, 0])
 			.nice();
+
+		const xVar = d => xScale(d[xAxisLabel]);
+		const yVar = d => yScale(d[yAxisLabel]);
 
 		const xAxisTickFormat = number =>
 			d3$1.format('t')(number);
@@ -83,22 +89,30 @@
 			.data(data);
 
 		var dotsEnter = dots.enter().append('circle')
-			.attr('make', d => d.make)
-			.attr('model', d => d.model)
-			.attr('url', d => d.url);
+			// .attr('make', d => d.make)
+			// .attr('model', d => d.model)
+			// .attr('url', d => d.url)
+			.attr('transmission', d=>d.transmission);
 			// .transition(100)
 			// 	.attr('opacity', 1)
 
-
-		
 		dotsEnter.merge(dots)
-			.attr("cx", function (d) { return xScale(d.year); } )
-			.attr("cy", function (d) { return yScale(d.price); } )
+			.attr("cx", xVar)
+			.attr("cy", yVar)
 			.attr("r", circleRadius)
 			.attr('class', 'datapoint')
 			.style("fill", d => colorScale(d.model)) 
 			.transition(500)
-				.attr('opacity', d => opacityFilter.includes(d.model) ? 1 : 0.1);
+				.attr('opacity', d => {
+					Object.keys(opacityFilter).forEach(key => {
+						console.log(key);
+						if (opacityFilter.length == 0)
+							return 1
+						// var key = filtObj['key']
+						// var val = filtObj['val']
+						return d[key] == opacityFilter[key] ? 1 : 0.1
+					});
+				});
 
 
 		dots.exit()
@@ -144,8 +158,16 @@
 	  .shapePadding(10)
 	  .scale(colorScale)
 	  .on('cellclick', cell => {
-	    opacityFilter.includes(cell) ? 
-	      opacityFilter = opacityFilter.filter(c => c != cell) : opacityFilter.push(cell);
+	    if (cell == '1')
+	      opacityFilter = {
+
+	      };
+	    else if (cell == '2')
+	      opacityFilter = {
+	        transmission: "Automatic"
+	      };
+	    // opacityFilter.includes(cell) ? 
+	    //   opacityFilter = opacityFilter.filter(c => c != cell) : opacityFilter.push(cell)
 	    render();
 	  });
 
@@ -155,12 +177,13 @@
 	  .attr('y', 45)
 	  .text(title);
 
-	d3.json('/cars/porsche/data/download').then(porscheData => {
+	d3.json('/data/porsche').then(porscheData => {
 	  console.log(porscheData);
 	  fullData = porscheData.sort();
 	  chartData = fullData;
-	  var models = [...new Set(fullData.map(item => item.model))];
-	  opacityFilter = models;
+	  // var models = [...new Set(fullData.map(item => item.model))]
+	  // opacityFilter = models;
+	  opacityFilter = {};
 
 	  const $table = $('#table');
 	  $(function() {
@@ -175,7 +198,7 @@
 	  });
 	  render();
 	  colorScale 
-	    .domain(models)
+	    .domain([1, 2, 3])
 	    .range(d3$1.schemeCategory10);
 	});
 
@@ -184,6 +207,8 @@
 	  
 	  scatterG.call(scatterplot, {
 	    data: chartData,
+	    xLabel: 'year',
+	    yLabel: 'price',
 	    xDomain: d3$1.extent(fullData, d => d.year),
 	    yDomain: [0, 150000],//extent(fullData, d => d.price),
 	    colorScale,

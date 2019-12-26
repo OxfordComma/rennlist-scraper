@@ -6,10 +6,7 @@ import {
 } from 'd3';
 import { scatterplot } from './scatterplot';
 
-let LinkFormatter = (value, row, index) => {
-  // console.log(value)
-  return "<a href='"+row.url+"'>"+row.info+"</a>";
-}
+
 const colorScale = scaleOrdinal();
 
 var opacityFilter
@@ -57,7 +54,7 @@ svg.append('text')
   .attr('y', 45)
   .text(title);
 
-d3.json('/cars/porsche/data/download').then(porscheData => {
+d3.json('/data/porsche').then(porscheData => {
   console.log(porscheData)
   fullData = porscheData.sort()
   chartData = fullData
@@ -86,6 +83,8 @@ const render = () => {
   
   scatterG.call(scatterplot, {
     data: chartData,
+    xLabel: 'date',
+    yLabel: 'price',
     xDomain: extent(fullData, d => d.year),
     yDomain: [0, 150000],//extent(fullData, d => d.price),
     colorScale,
