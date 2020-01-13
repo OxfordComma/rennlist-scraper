@@ -1,10 +1,15 @@
 var express = require('express');
 var router = express.Router();
+
+var googleHelper = require('../js/dl/googleDownloader.js')
+var spotifyHelper = require('../js/dl/spotifyDownloader.js')
 var mongoHelper = require('../js/dl/mongoDownloader.js')
+var lastFMHelper = require('../js/dl/lastFMDownloader.js')
+
 
 
 router.get('/google/onepages', function(req, res, next) {
-	downloader.getOnePageData().then(data => res.json(data))
+	googleHelper.getOnePageData().then(data => res.json(data))
 })
 
 router.get('/spotify/recent', function(req, res, next) {
@@ -12,7 +17,7 @@ router.get('/spotify/recent', function(req, res, next) {
 	if (req.session.passport && req.session.passport.user.spotify) {
 		req.session.return = ''
 
-		downloader.getSpotifyRecentData(req)
+		spotifyHelper.getSpotifyRecentData(req)
 			.then(data => res.json(data))
 	}
 	else {
@@ -30,7 +35,7 @@ router.get('/spotify/playlist', function(req, res, next) {
 	if (req.session.passport && req.session.passport.user.spotify) {
 		req.session.return = ''
 
-		downloader.getSpotifyPlaylistData(req, playlistUri)
+		spotifyHelper.getSpotifyPlaylistData(req, playlistUri)
 			.then(data => res.json(data))
 	}
 	else
@@ -45,12 +50,13 @@ router.get('/spotify/playlist', function(req, res, next) {
 router.get('/lastfm', function(req, res, next) {
 	// console.log(req)
 	var username = req.query.username
+	var pages = req.query.pages
 
-
+	
 	// if (req.session.passport && req.session.passport.user.lastfm) {
 	// 	req.session.return = ''
 
-		downloader.getLastFMData(req, username)
+		lastFMHelper.getLastFMData(req, username, pages)
 			.then(data => res.json(data))
 	// }
 	// else {
@@ -64,5 +70,6 @@ router.get('/porsche', function(req, res, next) {
 		res.json(data)
 	}).catch(err => console.log(err))
 })
+
 
 module.exports = router;

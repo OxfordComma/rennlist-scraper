@@ -77,11 +77,8 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 router.get('/google', passport.authenticate('google', {
-		prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
-		// scope: ['https://www.googleapis.com/auth/drive.metadata.readonly','https://www.googleapis.com/auth/userinfo.email'],
-		// authType: 'rerequest', 
-		accessType: 'offline'
-		// includeGrantedScopes: true
+			prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
+			accessType: 'offline'
 		})
 	);
 

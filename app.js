@@ -8,13 +8,10 @@ var helmet = require('helmet')
 require('dotenv').config()
 var session = require('express-session')
 
-// var googleAuth;
 
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth')
 var carsRouter = require('./routes/cars');
-// var spotifyRouter = require('./routes/spotify')
 var lastFmRouter = require('./routes/lastfm')
 var dataRouter = require('./routes/data')
 var updateRouter = require('./routes/update')
@@ -48,11 +45,9 @@ app.use(helmet())
 // app.use(pretty({ query: 'pretty' }));
 app.set('json spaces', 2)
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/', indexRouter);
 app.use('/auth', authRouter)
 app.use('/cars', carsRouter)
-// app.use('/spotify', spotifyRouter)
 app.use('/lastfm', lastFmRouter)
 app.use('/data', dataRouter)
 app.use('/update', updateRouter)

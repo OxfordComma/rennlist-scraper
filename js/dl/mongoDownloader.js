@@ -1,7 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
 
-
-
 // MONGO
 let getMongoClient = () => {
 	const uri = process.env.mongo_uri
@@ -28,10 +26,12 @@ let getPorscheData = () => {
 	return getMongoCollection('cl_cars', 'porsche').then(db => db.find().toArray())
 }
 
-// let get
-
+let getUsernameFromDb = (username) => {
+	return getMongoCollection('music', 'lastfm').then(db => db.find({ username: username }).toArray())
+}
 
 module.exports = {
 	getPorscheData: getPorscheData,
+	getUsernameFromDb: getUsernameFromDb,
 	getMongoCollection: getMongoCollection
 }
