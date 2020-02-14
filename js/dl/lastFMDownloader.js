@@ -10,23 +10,21 @@ let getLastFmAuth = () => {
 	return lastFmAuth
 }
 
-
-let getLastFMData = (req, username, pages) => {
-
-	mongoHelper.getUsernameFromDb(username).then(i => console.log(i))
-
-	var pageLimit = pages
-	var options = {
-		user: username,
-		page: 1,
-		limit: 200
-	}
-	// var lastFmAuth = getLastFmAuth(req.session.passport.user.lastfm)
+let getOneMonth = (req, username) => {
+	// var fromDate = new Date(new Date().setDate(new Date().getDate()-365))
+	var fromDate = new Date(new Date().setDate(new Date().getDate()-30))
+	// console.log(fromDate)
+	
 	var lastFmAuth = getLastFmAuth()
 
 
-	var items = []
-	let getNext = (opts) => {
+	let getNext = (page, accum) => {
+		var options = {
+			user: username,
+			page: page,
+			limit: 200,
+			from: fromDate
+		}
 		return new Promise((resolve, reject) => {
 			options['handlers'] = {
 				success: function(data) {
@@ -36,55 +34,83 @@ let getLastFMData = (req, username, pages) => {
 					reject(error);
 				}
 			}
-			lastFmAuth.request('user.getRecentTracks', opts)
-		})
-	}
+			lastFmAuth.request('user.getRecentTracks', options)
+		}).then(data => {
 
-	return getNext(options).then(data => {
-		// console.log(data)
-		// items = data
-
-		var promises = [getNext(options)]
-		while (promises.length < pageLimit) {
-			options.page = promises.length + 1
-			promises.push(getNext(options))
-		}
-		return Promise.all(promises)
-	}).then(data => {
-		// console.log(data)
-		var tracks = data.reduce((acc, curr) => {
-			// console.log(acc)
-			return acc.concat(curr.recenttracks.track)
-		}, [])
-		var tracks_formatted = tracks.map(i => {
-			// console.log(i)
-			return {
-				artists: [i.artist['#text']],
-				album: i.album['#text'],
-				name: i.name,
-				listen_date: i.date ? new Date(i.date['#text']) : new Date()
+			var tracks = data.recenttracks.track.map(i => {
+				return {
+					artists: [i.artist['#text']],
+					album: i.album['#text'],
+					name: i.name,
+					listen_date: i.date ? new Date(i.date['#text']) : new Date()
+				}
+			})
+			accum = accum.concat(tracks)
+			// console.log(tracks)
+			var oldestDate = tracks.sort((a, b) => a.listen_date - b.listen_date)[0].listen_date
+			// console.log(oldestDate)
+			if (oldestDate > fromDate) {
+				return getNext(page+1, accum)
+			}
+			else
+			{
+				return accum
 			}
 		})
-		// console.log(items)
-		// console.log(tracks_formatted)
-		items.push.apply(items, tracks_formatted)
-			// console.log(items)
-			// options.page = options.page+1
-			// if (options.page < pageLimit)
-			// 	return getNext()
-			// else
-		return items
+	}
+	return getNext(1, [])
+		// .then(data => {
+			// console.log(data)
+			// return data
+		// })
+}
+
+
+let getLastFMData = (req, username, fromPage, toPage) => {
+	// var pageLimit = pages
+	// var lastFmAuth = getLastFmAuth(req.session.passport.user.lastfm)
+	var lastFmAuth = getLastFmAuth()
+
+	// var items = []
+	let getNext = (page) => {
+		var options = {
+			user: username,
+			page: page,
+			limit: 200
+		}
+		return new Promise((resolve, reject) => {
+			options['handlers'] = {
+				success: function(data) {
+					resolve(data);
+				},
+				error: function(error) {
+					reject(error);
+				}
+			}
+			lastFmAuth.request('user.getRecentTracks', options)
+		}).then(data => {
+			return data.recenttracks.track.map(i => {
+				return {
+					artists: [i.artist['#text']],
+					album: i.album['#text'],
+					name: i.name,
+					listen_date: i.date ? new Date(i.date['#text']) : new Date()
+				}
+			})
+		})
+	}
+	var promises = []
+	for (var i = fromPage; i <= toPage; i++) {
+		promises.push(getNext(i))
+	}
+	return Promise.all(promises).then(data => {
+		return data
+			.reduce((acc, curr) => acc.concat(curr), [])
+			.sort((a, b) => a.listen_date - b.listen_date)
 	})
-	// }
-
-
-	
-	// return getNext().catch(err => console.log(err))
-	// .then(data => console.log	(data))
-	// .then(data => res.json(data))
 }
 
 module.exports = {
 	getLastFMData: getLastFMData,
-	
+	getOneMonth: getOneMonth
 }

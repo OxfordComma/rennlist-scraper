@@ -19,7 +19,7 @@ class StackedArea extends React.Component {
 	updateScales() {
 		console.log(this.props.xDomain)
 		// Define scales
-    var parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%SZ')
+    // var parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%SZ')
 		// console.log(parseTime(this.props.xDomain[0]))
 		this.xScale = d3.scaleUtc()
 			// .domain([parseTime(this.props.xDomain[0]), parseTime(this.props.xDomain[1])])
@@ -77,7 +77,7 @@ class StackedArea extends React.Component {
 					console.log(d)
 					return this.props.colorScale(d.key)
 				})
-				.attr('transform', `translate(${(this.props.width)/2}, 0) rotate(90)`)
+				.attr('transform', `translate(${(this.props.width)/2 - 150}, 0) rotate(90)`)
 				.attr('d', areaGenerator)
 
 		lines.merge(linesEnter)
@@ -88,19 +88,20 @@ class StackedArea extends React.Component {
 		lines.merge(linesEnter)
 			.transition()
 				.duration(200)
-					.attr('opacity', d => {
-						// console.log(d)
-						return d.selected ? 1 : 0.1
-					})
-					.attr('stroke-width', d => 1)
+					.attr('opacity', d => d.selected ? 1 : 0.1)
+					.attr('stroke-width', 1)
 	}
 	updateAxes() {
-		// console.log((this.props.xDomain[1] - this.props.xDomain[0])/(1000*60*60*24*7))
+		// console.log(this.props.seriesData)
 		const xAxis = d3.axisLeft(this.xScale)
-			.ticks(this.props.seriesData.length/4)
+			.ticks(this.props.numTicks)
 			.tickSizeInner(-this.drawWidth)
 			// .tickPadding(15)
-			.tickFormat(d3.utcFormat('%B'));
+			.tickFormat(d => {
+				// console.log(d)
+				// return (d3.utcFormat('%B')(d) == 'January') ? d3.utcFormat('%B %Y')(d) : d3.utcFormat('%B')(d);
+				return d3.utcFormat('%B %Y')(d)
+			})
 
 		const g = d3.select(this.stackedArea)
 			// .attr('transform', 'rotate(-90)')
@@ -122,7 +123,7 @@ class StackedArea extends React.Component {
 				.selectAll('text')
 					.attr('text-anchor', 'start')
 					.attr('opacity', 0.4)
-					.attr('transform', `translate(5, 25)`);
+					.attr('transform', `translate(5, 15)`);
 
 		xAxisGEnter.merge(xAxisG)
 			.selectAll('line')
@@ -189,9 +190,6 @@ StackedArea.defaultProps = {
 	seriesData: [],
 	width: 300,
 	height: 300,
-	// radius: 5,
-	// spacing: 100,
-	// color: "blue",
 	margin: {
 		left: 0,
 		right: 0,

@@ -10,9 +10,9 @@ html
   link(rel='stylesheet' href='/stylesheets/styles.css')
 
   body
-    form(action='/lastfm/musicstream')
-      label(htmlFor="username")
-        span Last.fm username
-      input(type="text", name="pages", id="pages", autocomplete="off", value="10", hidden)
-      input(type="text", name="username", id="username", required="required", autocomplete="off", autofocus)
+    form(action='/import/tab')
+      label(htmlFor="url")
+        span Tab URL:
+      //- input(type="text", name="pages", id="pages", autocomplete="off", value="10", hidden)
+      input(type="text", name="url", id="url", required="required", autocomplete="off", autofocus)
       input(type="submit" hidden)

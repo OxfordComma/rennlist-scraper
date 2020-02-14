@@ -1,49 +1,76 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
-  background: #333;
-  margin: 0;
+	background: #333;
+	margin: 0;
+	color: white;
 }
 
 text {
-  fill: white;
+	fill: white;
+	font-family: 'Playfair Display', serif;
 }
 
-
-input {
-  padding-left: 20px;
-
-  display: block;
-  width: 100%;
-  padding-top: 10px;
-  border: none;
-  border-radius: 0;
-  color: white;
-  background: #333;
-  font-size: 10em;
-  transition: .3s ease;
-  caret-color: white;
+#porsche .container {
+	display: grid;
+	grid-template-columns: 175px auto;
+	grid-template-rows: 50% auto;
+	width: 100vw;
+	height: 100vh;
 }
 
-input:focus {
-    outline: none;
+#porsche #sidebar {
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 2;
 }
 
-label {
-  padding-left: 20px;
-
-  color: white;
-  font-size: 4em;
-  transition: .3s ease;
+#porsche #graph {
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 2;
 }
 
-.x-axis {
-  font: 64px serif;
+#porsche #table {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row-start: 2;
+	grid-row-end: 3;
 }
 
-.legend {
-  cursor: pointer;
+#lastfm input {
+	padding-left: 20px;
+
+	width: 100%;
+	padding-top: 10px;
+	border: none;
+	border-radius: 0;
+	color: white;
+	font-size: 6em;
+	transition: .3s ease;
+	caret-color: white;
+	outline: none;
+	border: none;
+	background: transparent;
 }
 
+#lastfm label {
+	padding-left: 20px;
+
+	color: white;
+	font-size: 4em;
+	transition: .3s ease;
+	/*vertical-align: middle;*/
+}
+
+#lastfm path {
+	cursor: pointer;
+}
+
+#lastfm .legend-item {
+	cursor: pointer;
+}
+
+#lastfm .tick {
+	font-size: 4em;
+}

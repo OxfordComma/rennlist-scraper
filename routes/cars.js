@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
 })
 
 router.get('/porsche', function(req, res, next) {
-	res.render('997')
+	res.render('porsches')
 });
 
 module.exports = router;

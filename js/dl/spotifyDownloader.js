@@ -82,3 +82,9 @@ let addTracksToSpotifyPlaylist = (req, playlistUri, trackUris) => {
 	console.log(trackUris)
 	return spotifyAuth.addTracksToPlaylist(playlistUri, trackUris)
 }
+
+module.exports = {
+	getSpotifyPlaylistData: getSpotifyPlaylistData,
+	getSpotifySearchResults: getSpotifySearchResults,
+	addTracksToSpotifyPlaylist: addTracksToSpotifyPlaylist
+}

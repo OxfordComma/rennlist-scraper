@@ -5,13 +5,38 @@ var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth2').Strategy
 var SpotifyStrategy = require('passport-spotify').Strategy;
 var LastFmStrategy = require('passport-lastfm')
+var GoogleDriveStrategy = require('passport-google-drive').Strategy
 
 passport.use(
 	new GoogleStrategy({
 		clientID:  process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
 		clientSecret: process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
 		callbackURL: 'https://localhost:3000/auth/google/callback',
-		scope: ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/userinfo.email'],
+		scope: ['email'],
+		passReqToCallback: true,
+		authType: 'rerequest', 
+		// accessType: 'offline', 
+		// prompt: 'consent', 
+		includeGrantedScopes: true
+	},
+	function(request, accessToken, refreshToken, profile, done) { 
+		// console.log(profile)
+		return done(null, {
+			google: {
+				accessToken: accessToken,
+				refreshToken: refreshToken,
+				email: profile.email
+			}
+		});
+	}
+));
+
+passport.use(
+	new GoogleDriveStrategy({
+		clientID:  process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
+		clientSecret: process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
+		callbackURL: 'https://localhost:3000/auth/googledrive/callback',
+		scope: ['https://www.googleapis.com/auth/drive.readonly'],
 		passReqToCallback: true,
 		authType: 'rerequest', 
 		// accessType: 'offline', 
@@ -77,13 +102,31 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 router.get('/google', passport.authenticate('google', {
-			prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
-			accessType: 'offline'
-		})
-	);
+		prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
+		accessType: 'offline',
+		scope: ['email']//, 
+          // 'https://www.googleapis.com/auth/drive.readonly',
+          // 'https://www.googleapis.com/auth/documents.readonly']
+	})
+);
 
 router.get('/google/callback', passport.authenticate('google'),
 	function(req, res, next) {
+		// console.log(req)
+		res.redirect(req.session.return)
+	}
+)
+
+router.get('/googledrive', passport.authenticate('google-drive', {
+		prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
+		accessType: 'offline',
+		scope: ['https://www.googleapis.com/auth/drive']
+	})
+);
+
+router.get('/googledrive/callback', passport.authenticate('google-drive'),
+	function(req, res, next) {
+		// console.log(req)
 		res.redirect(req.session.return)
 	}
 )

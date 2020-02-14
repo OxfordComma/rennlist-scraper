@@ -1,9 +1,9 @@
 import React from 'react'
+import * as d3 from 'd3'
 
 class Legend extends React.Component {
 	constructor(props) {
 		super(props);
-		this.align = 'right'
 
 		// Graph width and height - accounting for margins
 		// this.drawWidth = this.props.width - this.props.margin.left - this.props.margin.right;
@@ -74,11 +74,11 @@ class Legend extends React.Component {
 					// console.log(align)
 					// console.log(textLengths.slice(0, i))
 					return `translate(${ this.props.offset + align + (this.props.radius * 4 * i) + d3.sum(textLengths.slice(0, i)) }, 0)`
-				 	// `translate(${ this.props.offset + this.props.radius * i * 4 + d3.sum(textLengths.slice(0, i)) }, 0)` :
+					// `translate(${ this.props.offset + this.props.radius * i * 4 + d3.sum(textLengths.slice(0, i)) }, 0)` :
 				}
 
 				if (this.props.direction == 'vertical') {
-					return `translate(${ this.props.offset + align }, ${ this.props.offset + this.props.radius * i * 4 })`
+					return `translate(${ this.props.offset + align }, ${ this.props.radius * i * 4 })`
 				}
 
 			})

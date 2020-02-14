@@ -8,8 +8,12 @@ var lastFMHelper = require('../js/dl/lastFMDownloader.js')
 
 
 
-router.get('/google/onepages', function(req, res, next) {
+router.get('/google/onepages/all', function(req, res, next) {
 	googleHelper.getOnePageData().then(data => res.json(data))
+})
+
+router.get('/google/onepages/starred', function(req, res, next) {
+	googleHelper.getStarredOnePageData().then(data => res.json(data))
 })
 
 router.get('/spotify/recent', function(req, res, next) {
@@ -45,6 +49,18 @@ router.get('/spotify/playlist', function(req, res, next) {
 	}
 })
 
+router.get('/user', function(req, res, next) {
+	console.log(req.session)
+	mongoHelper.getUsernameFromDb(req.query.username)
+		.then(data => {
+			console.log(data)
+			if (data.length == 0) {
+				mongoHelper.createUser(req.query.username)
+			}
+			res.json(data)
+		})
+})
+
 
 
 router.get('/lastfm', function(req, res, next) {
@@ -56,13 +72,22 @@ router.get('/lastfm', function(req, res, next) {
 	// if (req.session.passport && req.session.passport.user.lastfm) {
 	// 	req.session.return = ''
 
-		lastFMHelper.getLastFMData(req, username, pages)
+		lastFMHelper.getLastFMData(req, username, 1, 25)
 			.then(data => res.json(data))
 	// }
 	// else {
 	// 	req.session.return = '/data/lastfm?username='+username
 	// 	res.redirect('/auth/lastfm')
 	// }
+})
+
+router.get('/lastfm/onemonth', function(req, res, next) {
+	var username = req.query.username
+	lastFMHelper.getOneMonth(req, username)
+		.then(data => {
+			// console.log(data)
+			res.json(data)
+		})
 })
 
 router.get('/porsche', function(req, res, next) {
