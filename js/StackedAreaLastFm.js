@@ -65,11 +65,11 @@ class StackedAreaLastFm extends React.Component {
 	}
 
 	componentDidMount() {
-		var userData = fetch("https://localhost:3000/data/user?username="+this.state.username.toLowerCase())
+		var userData = fetch("/data/user?username="+this.state.username.toLowerCase())
 			.then(data => data.json())
 			.then(res => console.log(res))
 
-		var dataUrl = "https://localhost:3000/data/lastfm?username="+this.state.username
+		var dataUrl = "/data/lastfm?username="+this.state.username
 		d3.json(dataUrl, (err, data) => {
 			// console.log(data)
 			// Counts for each category

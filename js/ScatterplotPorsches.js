@@ -40,7 +40,7 @@ class ScatterplotPorsches extends React.Component {
   }
 
 	componentDidMount() {
-		var dataUrl = "https://localhost:3000/data/porsche"
+		var dataUrl = "/data/porsche"
 
 		d3.json(dataUrl, (err, data) => {
 			console.log(data)

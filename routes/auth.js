@@ -11,7 +11,7 @@ passport.use(
 	new GoogleStrategy({
 		clientID:  process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
 		clientSecret: process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
-		callbackURL: 'https://localhost:3000/auth/google/callback',
+		callbackURL: '/auth/google/callback',
 		scope: ['email'],
 		passReqToCallback: true,
 		authType: 'rerequest', 
@@ -35,7 +35,7 @@ passport.use(
 	new GoogleDriveStrategy({
 		clientID:  process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
 		clientSecret: process.env.google_client_secret, // e.g. _ASDFA%DFASDFASDFASD#FAD-
-		callbackURL: 'https://localhost:3000/auth/googledrive/callback',
+		callbackURL: '/auth/googledrive/callback',
 		scope: ['https://www.googleapis.com/auth/drive.readonly'],
 		passReqToCallback: true,
 		authType: 'rerequest', 
@@ -77,7 +77,7 @@ passport.use(
 	new LastFmStrategy({
 		'api_key': process.env.lastfm_api_key,
 		'secret': process.env.lastfm_secret,
-		'callbackURL': 'https://localhost:3000/auth/lastfm/callback'
+		'callbackURL': '/auth/lastfm/callback'
 	},
 	function(req, sessionKey, done) {
 		return done(null, {
