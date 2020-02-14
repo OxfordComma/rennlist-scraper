@@ -4,27 +4,27 @@ import { useTable, useSortBy, useFilters, useRowSelect } from 'react-table'
 
 
 function filterLessThan(rows, id, filterValue) {
-  return rows.filter(row => {
-    const rowValue = row.values[id]
-    return rowValue <= filterValue
-  })
+	return rows.filter(row => {
+		const rowValue = row.values[id]
+		return rowValue <= filterValue
+	})
 }
 
 const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+	({ indeterminate, ...rest }, ref) => {
+		const defaultRef = React.useRef()
+		const resolvedRef = ref || defaultRef
 
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+		React.useEffect(() => {
+			resolvedRef.current.indeterminate = indeterminate
+		}, [resolvedRef, indeterminate])
 
-    return (
-      <div>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </div>
-    )
-  }
+		return (
+			<div>
+				<input type="checkbox" ref={resolvedRef} {...rest} />
+			</div>
+		)
+	}
 )
 
 
@@ -60,88 +60,88 @@ function SelectColumnFilter({
 }
 
 function SliderColumnFilter({
-  column: { filterValue, setFilter, preFilteredRows, id },
+	column: { filterValue, setFilter, preFilteredRows, id },
 }) {
-  // Calculate the min and max
-  // using the preFilteredRows
+	// Calculate the min and max
+	// using the preFilteredRows
 
-  const [min, max] = React.useMemo(() => {
-    let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
-    let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
-    preFilteredRows.forEach(row => {
-      min = Math.min(row.values[id], min)
-      max = Math.max(row.values[id], max)
-    })
-    return [min, max]
-  }, [id, preFilteredRows])
+	const [min, max] = React.useMemo(() => {
+		let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
+		let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
+		preFilteredRows.forEach(row => {
+			min = Math.min(row.values[id], min)
+			max = Math.max(row.values[id], max)
+		})
+		return [min, max]
+	}, [id, preFilteredRows])
 
-  return (
-    <div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={filterValue || min}
-        onChange={e => {
-          setFilter(parseInt(e.target.value, 10))
-        }}
-      />
-      <button onClick={() => setFilter(undefined)}>Off</button>
-    </div>
-  )
+	return (
+		<div>
+			<input
+				type="range"
+				min={min}
+				max={max}
+				value={filterValue || min}
+				onChange={e => {
+					setFilter(parseInt(e.target.value, 10))
+				}}
+			/>
+			<button onClick={() => setFilter(undefined)}>Off</button>
+		</div>
+	)
 }
 
 // This is a custom UI for our 'between' or number range
 // filter. It uses two number boxes and filters rows to
 // ones that have values between the two
 function NumberRangeColumnFilter({
-  column: { filterValue = [], preFilteredRows, setFilter, id },
+	column: { filterValue = [], preFilteredRows, setFilter, id },
 }) {
-  const [min, max] = React.useMemo(() => {
-    let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
-    let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
-    preFilteredRows.forEach(row => {
-      min = Math.min(row.values[id], min)
-      max = Math.max(row.values[id], max)
-    })
-    return [min, max]
-  }, [id, preFilteredRows])
+	const [min, max] = React.useMemo(() => {
+		let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
+		let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0
+		preFilteredRows.forEach(row => {
+			min = Math.min(row.values[id], min)
+			max = Math.max(row.values[id], max)
+		})
+		return [min, max]
+	}, [id, preFilteredRows])
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <input
-        value={filterValue[0] || ''}
-        type="number"
-        onChange={e => {
-          const val = e.target.value
-          setFilter((old = []) => [val ? parseInt(val, 10) : undefined, old[1]])
-        }}
-        placeholder={`Min (${min})`}
-        style={{
-          width: '70px',
-          marginRight: '0.5rem',
-        }}
-      />
-      to
-      <input
-        value={filterValue[1] || ''}
-        type="number"
-        onChange={e => {
-          const val = e.target.value
-          setFilter((old = []) => [old[0], val ? parseInt(val, 10) : undefined])
-        }}
-        placeholder={`Max (${max})`}
-        style={{
-          width: '70px',
-          marginLeft: '0.5rem',
-        }}
-      />
-    </div>
-  )
+	return (
+		<div
+			style={{
+				display: 'flex',
+			}}
+		>
+			<input
+				value={filterValue[0] || ''}
+				type="number"
+				onChange={e => {
+					const val = e.target.value
+					setFilter((old = []) => [val ? parseInt(val, 10) : undefined, old[1]])
+				}}
+				placeholder={`Min (${min})`}
+				style={{
+					width: '70px',
+					marginRight: '0.5rem',
+				}}
+			/>
+			to
+			<input
+				value={filterValue[1] || ''}
+				type="number"
+				onChange={e => {
+					const val = e.target.value
+					setFilter((old = []) => [old[0], val ? parseInt(val, 10) : undefined])
+				}}
+				placeholder={`Max (${max})`}
+				style={{
+					width: '70px',
+					marginLeft: '0.5rem',
+				}}
+			/>
+		</div>
+	)
 }
 
 function Table({ columns, data }) {
@@ -163,28 +163,28 @@ function Table({ columns, data }) {
 		useSortBy,
 		useRowSelect,
 		hooks => {
-      hooks.flatColumns.push(columns => [
-        // Let's make a column for selection
-        {
-          id: 'selection',
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
-        ...columns,
-      ])
-    }
+			hooks.flatColumns.push(columns => [
+				// Let's make a column for selection
+				{
+					id: 'selection',
+					// The header can use the table's getToggleAllRowsSelectedProps method
+					// to render a checkbox
+					Header: ({ getToggleAllRowsSelectedProps }) => (
+						<div>
+							<IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+						</div>
+					),
+					// The cell can use the individual row's getToggleRowSelectedProps method
+					// to the render a checkbox
+					Cell: ({ row }) => (
+						<div>
+							<IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+						</div>
+					),
+				},
+				...columns,
+			])
+		}
 	)
 
 
@@ -198,7 +198,7 @@ function Table({ columns, data }) {
 						{headerGroup.headers.map(column => (
 							<th {...column.getHeaderProps(column.getSortByToggleProps())}>
 								{column.render('Header')}
-                {column.canFilter ? column.render('Filter') : null}
+								{column.canFilter ? column.render('Filter') : null}
 							</th>
 						))}
 					</tr>

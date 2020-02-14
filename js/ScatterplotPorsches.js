@@ -25,19 +25,19 @@ class ScatterplotPorsches extends React.Component {
 		// this.onChartChange = this.onChartChange.bind(this)
 
 		this.onClickLegend = this.onClickLegend.bind(this)
-    this.onClickChartItem = this.onClickChartItem.bind(this)
-    this.onClickBackground = this.onClickBackground.bind(this)
-    // this.dropdownUpdated = this.dropdownUpdated.bind(this)
-    this.getLegendItems = this.getLegendItems.bind(this)
-    this.onCheckChange = this.onCheckChange.bind(this)
-    this.colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+		this.onClickChartItem = this.onClickChartItem.bind(this)
+		this.onClickBackground = this.onClickBackground.bind(this)
+		// this.dropdownUpdated = this.dropdownUpdated.bind(this)
+		this.getLegendItems = this.getLegendItems.bind(this)
+		this.onCheckChange = this.onCheckChange.bind(this)
+		this.colorScale = d3.scaleOrdinal(d3.schemeCategory10)
 
-  }
+	}
 	getLegendItems () {
 			var legendItems = [...new Set(this.state.jsonData.map(item => this.state.legendBy(item)))]
-      // console.log(legendItems)
-      return legendItems
-  }
+			// console.log(legendItems)
+			return legendItems
+	}
 
 	componentDidMount() {
 		var dataUrl = "/data/porsche"
@@ -79,61 +79,61 @@ class ScatterplotPorsches extends React.Component {
 	}
 
 	onClickLegend(item) {
-      console.log('legend click')
+			console.log('legend click')
 
-      // var legendBy = this.props.legendBy
-      var currentData = this.state.filteredJsonData
-      var currentSelection = this.state.selectedLegendItems
+			// var legendBy = this.props.legendBy
+			var currentData = this.state.filteredJsonData
+			var currentSelection = this.state.selectedLegendItems
 
-      var newSelectedLegendItems
-      if (currentSelection.length == 1 && currentSelection[0] == item.toString())
-          newSelectedLegendItems = this.getLegendItems()
-      else
-          newSelectedLegendItems = [item.toString()]
-      
-      // console.log(newSelectedLegendItems)
-      var newData = currentData.map(c => {
-        c.selected = newSelectedLegendItems.includes(this.state.legendBy(c).toString()) ? true : false
-        return c
-      })
-      // console.log(newData)
-      this.setState({ filteredJsonData: newData })
-  }
+			var newSelectedLegendItems
+			if (currentSelection.length == 1 && currentSelection[0] == item.toString())
+					newSelectedLegendItems = this.getLegendItems()
+			else
+					newSelectedLegendItems = [item.toString()]
+			
+			// console.log(newSelectedLegendItems)
+			var newData = currentData.map(c => {
+				c.selected = newSelectedLegendItems.includes(this.state.legendBy(c).toString()) ? true : false
+				return c
+			})
+			// console.log(newData)
+			this.setState({ filteredJsonData: newData })
+	}
 
-  onClickChartItem(item) {
-      console.log('circle click')
-      var currentData = this.state.filteredJsonData
-      var currentlySelected = currentData.filter(d => d.selected == true)
-      var newData
-      var newSelectedLegendItems
+	onClickChartItem(item) {
+			console.log('circle click')
+			var currentData = this.state.filteredJsonData
+			var currentlySelected = currentData.filter(d => d.selected == true)
+			var newData
+			var newSelectedLegendItems
 
-      if (currentlySelected.length == 1 && currentlySelected[0].id == item.id) {
-          newData = currentData.map(c => {
-	          c.selected = true
-            return c
-          })
-          newSelectedLegendItems = this.getLegendItems()
-      }
-      else {
-          newData = currentData.map(c => {
-            c.selected = c==item ? true : false
-            return c
-          })
-          newSelectedLegendItems = []
-      }
-      this.setState({ filteredJsonData: newData })
-  }
+			if (currentlySelected.length == 1 && currentlySelected[0].id == item.id) {
+					newData = currentData.map(c => {
+						c.selected = true
+						return c
+					})
+					newSelectedLegendItems = this.getLegendItems()
+			}
+			else {
+					newData = currentData.map(c => {
+						c.selected = c==item ? true : false
+						return c
+					})
+					newSelectedLegendItems = []
+			}
+			this.setState({ filteredJsonData: newData })
+	}
 
-  onClickBackground() {
-    console.log('background click')
-    var currentData = this.state.filteredJsonData
-    var newSelectedLegendItems = this.getLegendItems()
-    var newData = currentData.map(c => {
-      c.selected = true
-      return c
-    })
-    this.setState({ filteredJsonData: newData })
-  }
+	onClickBackground() {
+		console.log('background click')
+		var currentData = this.state.filteredJsonData
+		var newSelectedLegendItems = this.getLegendItems()
+		var newData = currentData.map(c => {
+			c.selected = true
+			return c
+		})
+		this.setState({ filteredJsonData: newData })
+	}
 
 	// handleDropdownChange(event) {
 	// 	var legendItem = event.target.value
@@ -229,10 +229,10 @@ class ScatterplotPorsches extends React.Component {
 
 	render() {
 		console.log(document.getElementById('graph'))
-    return (
-    	<div id='porsche' className='container'>
-    		<div id='sidebar'>
-        	<form onSubmit={this.handleDropdownSubmit} id='legendoptions'>
+		return (
+			<div id='porsche' className='container'>
+				<div id='sidebar'>
+					<form onSubmit={this.handleDropdownSubmit} id='legendoptions'>
 						{/*<select onChange={this.handleDropdownChange}>
 							{this.options.map(d => <option value={ d }>{ d }</option>)}
 						</select>
@@ -270,47 +270,47 @@ class ScatterplotPorsches extends React.Component {
 					</form>
 					
 				</div>
-        <div id='graph'>
-          <svg className="scatter" 
-        		// width={document.getElementById('graph') ? document.getElementById('graph').offsetWidth : 0} 
-        		// height={document.getElementById('graph') ? document.getElementById('graph').offsetHeight : 0}
-        		viewBox={"0 0 "+(window.innerWidth)+" "+(window.innerHeight) }
-        		preserveAspectRatio="xMidYMid meet"
-        		>
-            <Scatterplot
-              width={window.innerWidth}
-              height={window.innerHeight*0.5}
-              // xValue={this.xVar}
-              // yValue={this.yVar} 
-              data={this.state.filteredJsonData}
-              legendBy={this.state.legendBy}
-              // legendItems={this.getLegendItems()}
-              // selectedLegendItems={this.state.selectedLegendItems}
-              colorScale={this.colorScale}
-              onClickLegend={this.onClickLegend}
-              onClickChartItem={this.onClickChartItem}
-              onClickBackground={this.onClickBackground}
-            />
-            <Legend
-              chartWidth={this.drawWidth}
-              offset={50}
-              direction={'horizontal'}
-              align={'left'}
-              legendItems={this.getLegendItems()}
-              selectedLegendItems={this.state.selectedLegendItems}
-              onClickLegend={this.onClickLegend}
-              onClickBackground={this.onClickBackground}
-              colorScale={this.colorScale}
-              />
-            </svg>
-        </div>
-        <div id='table'>
-	        <LinkFilterTable nestData={
+				<div id='graph'>
+					<svg className="scatter" 
+						// width={document.getElementById('graph') ? document.getElementById('graph').offsetWidth : 0} 
+						// height={document.getElementById('graph') ? document.getElementById('graph').offsetHeight : 0}
+						viewBox={"0 0 "+(window.innerWidth)+" "+(window.innerHeight) }
+						preserveAspectRatio="xMidYMid meet"
+						>
+						<Scatterplot
+							width={window.innerWidth}
+							height={window.innerHeight*0.5}
+							// xValue={this.xVar}
+							// yValue={this.yVar} 
+							data={this.state.filteredJsonData}
+							legendBy={this.state.legendBy}
+							// legendItems={this.getLegendItems()}
+							// selectedLegendItems={this.state.selectedLegendItems}
+							colorScale={this.colorScale}
+							onClickLegend={this.onClickLegend}
+							onClickChartItem={this.onClickChartItem}
+							onClickBackground={this.onClickBackground}
+						/>
+						<Legend
+							chartWidth={this.drawWidth}
+							offset={50}
+							direction={'horizontal'}
+							align={'left'}
+							legendItems={this.getLegendItems()}
+							selectedLegendItems={this.state.selectedLegendItems}
+							onClickLegend={this.onClickLegend}
+							onClickBackground={this.onClickBackground}
+							colorScale={this.colorScale}
+							/>
+						</svg>
+				</div>
+				<div id='table'>
+					<LinkFilterTable nestData={
 						this.state.filteredJsonData
 					}/>
 				</div>
 			</div>
-    )
+		)
 	}
 }
 
