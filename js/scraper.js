@@ -1,7 +1,12 @@
 const pupp = require( "puppeteer" );
 
 async function getSong( url ) {
-	const browser = await pupp.launch({ args: ['--no-sandbox'] });
+	const browser = await pupp.launch({
+	  args: [
+	    '--no-sandbox',
+	    '--disable-setuid-sandbox',
+	  ],
+	});
 	const page = await browser.newPage();
 
 	await page.goto( url );
