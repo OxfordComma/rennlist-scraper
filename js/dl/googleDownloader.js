@@ -15,7 +15,7 @@ let getOnePageData = () => {
 		q: "'0B7wQpwvNx4sTUVZKMFFIVFByakE' in parents",
 		orderBy: 'modifiedTime desc',
 		pageSize: 1000,
-		fields: 'files(id, name, starred2)'
+		fields: 'files(id, name, starred)'
 	}
 
 	// if (req.session.passport && req.session.passport.user.google)
