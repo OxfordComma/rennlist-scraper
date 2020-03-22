@@ -7,6 +7,8 @@ var SpotifyStrategy = require('passport-spotify').Strategy;
 var LastFmStrategy = require('passport-lastfm')
 var GoogleDriveStrategy = require('passport-google-drive').Strategy
 
+var mongoHelper = require('../js/dl/mongoDownloader.js')
+
 passport.use(
 	new GoogleStrategy({
 		clientID:  process.env.google_client_id, // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
@@ -95,18 +97,19 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(obj, cb) {
+
 	// db.users.findById(id, function (err, user) {
 	//   if (err) { return cb(err); }
 		cb(null, obj);
 	// });
 });
 
+// Google authentication
+
 router.get('/google', passport.authenticate('google', {
-		prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
+		prompt: 'consent',
 		accessType: 'offline',
-		scope: ['email']//, 
-          // 'https://www.googleapis.com/auth/drive.readonly',
-          // 'https://www.googleapis.com/auth/documents.readonly']
+		scope: ['email']
 	})
 );
 
@@ -117,8 +120,10 @@ router.get('/google/callback', passport.authenticate('google'),
 	}
 )
 
+// Google drive authentication
+
 router.get('/googledrive', passport.authenticate('google-drive', {
-		prompt: 'consent', // access type and approval prompt will force a new refresh token to be made each time signs in
+		prompt: 'consent',
 		accessType: 'offline',
 		scope: ['https://www.googleapis.com/auth/drive']
 	})
@@ -131,14 +136,19 @@ router.get('/googledrive/callback', passport.authenticate('google-drive'),
 	}
 )
 
+// Spotify authentication
+
+
 router.get('/spotify', passport.authenticate('spotify'));
 
 router.get('/spotify/callback', passport.authenticate('spotify'),
 	function(req, res, next) {
+		console.log(req.session)
 		res.redirect(req.session.return)
 	}
 )
 
+// Last.fm authentication
 
 router.get('/lastfm', passport.authenticate('lastfm'))
 

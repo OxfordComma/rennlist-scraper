@@ -40,7 +40,9 @@ router.get('/spotify/playlist', function(req, res, next) {
 		req.session.return = ''
 
 		spotifyHelper.getSpotifyPlaylistData(req, playlistUri)
-			.then(data => res.json(data))
+			.then(data => {
+				res.json(data)
+			})
 	}
 	else
 	{
@@ -49,36 +51,24 @@ router.get('/spotify/playlist', function(req, res, next) {
 	}
 })
 
-router.get('/user', function(req, res, next) {
-	console.log(req.session)
-	mongoHelper.getUsernameFromDb(req.query.username)
-		.then(data => {
-			console.log(data)
-			if (data.length == 0) {
-				mongoHelper.createUser(req.query.username)
-			}
-			res.json(data)
-		})
-})
+// router.get('/user', function(req, res, next) {
+// 	console.log(req.session)
+// 	mongoHelper.getUsernameFromDb(req.query.username)
+// 		.then(data => {
+// 			console.log(data)
+// 			if (data.length == 0) {
+// 				mongoHelper.createUser(req.query.username)
+// 			}
+// 			res.json(data)
+// 		})
+// })
 
 
 
 router.get('/lastfm', function(req, res, next) {
-	// console.log(req)
 	var username = req.query.username
-	var pages = req.query.pages
-
-	
-	// if (req.session.passport && req.session.passport.user.lastfm) {
-	// 	req.session.return = ''
-
-		lastFMHelper.getLastFMData(req, username, 1, 25)
-			.then(data => res.json(data))
-	// }
-	// else {
-	// 	req.session.return = '/data/lastfm?username='+username
-	// 	res.redirect('/auth/lastfm')
-	// }
+	lastFMHelper.getLastFMData(req, username, 1, 25)
+		.then(data => res.json(data))
 })
 
 router.get('/lastfm/onemonth', function(req, res, next) {
@@ -90,10 +80,11 @@ router.get('/lastfm/onemonth', function(req, res, next) {
 		})
 })
 
-router.get('/porsche', function(req, res, next) {
-	mongoHelper.getPorscheData().then(data => {
-		res.json(data)
-	}).catch(err => console.log(err))
+router.get('/cars/porsche', function(req, res, next) {
+	mongoHelper.getMongoCollection('cl_cars', 'porsche_normalized')
+		.then(db => db.find().toArray())
+		.then(data => res.json(data))
+		.catch(err => console.log(err))
 })
 
 

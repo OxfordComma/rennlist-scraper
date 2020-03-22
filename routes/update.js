@@ -1,10 +1,14 @@
 var express = require('express');
+var path = require('path')
 var router = express.Router();
 // var downloader = require('../js/downloader.js')
 var googleHelper = require('../js/dl/googleDownloader.js')
 var spotifyHelper = require('../js/dl/spotifyDownloader.js')
 var rennlistHelper = require('../js/dl/rennlistDownloader.js')
-var mongoHelper = require('../js/dl/mongoDownloader.js')
+var mongoHelper = require('../js/dl/mongoDownloader.js');
+const fetch = require('node-fetch')
+const porscheRules = require('../js/rules/porscheRules.js')
+
 
 
 router.get('/onepage', function(req, res, next) {
@@ -162,19 +166,21 @@ router.get('/rennlist/url', function(req, res, next) {
 })
 
 router.get('/cars/normalize', function(req, res, next) {
-	// var url = req.query.url
-	// normalized_fields = ['_turbo', '_cabriolet']
-	var rules = [
-		// {
-
-		// },
-		// {
-
-		// }
-	]
-	// rennlistHelper.updateUrl(url).then(data => {
-	// 	console.log(data)
-	// 	res.json(data)
-	// })
+	let normalizedTable = 'porsche_normalized'
+	let rules = porscheRules
+	let carDataUrl = '/data/cars/porsche'
+		mongoHelper.getPorscheData().then(data => {
+		// console.log(data)
+		data = data.map(d => {
+			for (const [ruleColumn, ruleFunc] of Object.entries(rules)) {
+				d[ruleColumn] = ruleFunc(d)
+			}
+			return d
+		})
+		// console.log(data[0])
+		mongoHelper.updatePorscheData(data, normalizedTable)
+			.then(data => res.json(data))
+	})
+	
 })
 module.exports = router;

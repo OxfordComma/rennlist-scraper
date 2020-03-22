@@ -69,7 +69,7 @@ let getDetailedData = (porscheUrl) => {
 		console.log(car.info)
 
 		return car
-	})
+	}).catch(err => err)
 }
 
 let getPageUrls = (pageUrl) => {
@@ -79,7 +79,7 @@ let getPageUrls = (pageUrl) => {
 			// console.log(response)
 			return $('#search-result-vehicle h3.title > a', response.data)
 				.map(function() { return $(this)[0].attribs.href }).get();
-		})
+		}).catch(err => err)
 }
 
 module.exports = {
@@ -173,20 +173,25 @@ module.exports = {
 			return urls
 		}).then(urls => {
 			// console.log(urls)
-			return Promise.all(urls.map(u => getPageUrls(u))).then(urls => urls.flat())
+			return Promise.all(
+				urls.map(u => getPageUrls(u))
+			).then(urls => urls.flat())
 		}).then(rennlistUrls => {
+			console.log(rennlistUrls)
 			return mongoHelper.getMongoCollection('cl_cars', 'porsche').then(collection => {
 				return collection.distinct('url').then(mongoUrls => {
 					var urlsToAdd = rennlistUrls.filter(r => !mongoUrls.includes(r))
-					return Promise.all(urlsToAdd.map(u => getDetailedData(u)))
-				}).then(cars => {
-					cars.forEach(car => {
-						collection.updateOne({ url: car.url}, {$set: car}, {upsert: true})
-					})
-					console.log(cars.flat())
-					return cars.flat()
-				})
+					console.log(urlsToAdd)
+			// 		return Promise.all(urlsToAdd.map(u => getDetailedData(u)))
 			})
-		})	
+			// .then(cars => {
+			// 		// cars.filter(car => car !== undefined).forEach(car => {
+			// 		// 	collection.updateOne({ url: car.url}, {$set: car}, {upsert: true})
+			// 		// })
+			// 		console.log(cars.flat())
+			// 		return cars.flat()
+			// 	})
+			})
+		}).catch(err => err);
 	}
 }

@@ -20,15 +20,16 @@ let getSpotifyRecentData = (req) => {
 	var spotifyAuth = getSpotifyAuth(req.session.passport.user.spotify)
 		
 	return spotifyAuth.getMyRecentlyPlayedTracks(options).then(data => {
-		console.log(data.body.items)
-		return data.body.items.map(i => {
-			return {
-				date_played: new Date(i.played_at),
-				artists: i.track.artists.map(a => a.name),
-				album: i.track.album.name,
-				name: i.track.name
-			}
-		})
+		// console.log(data.body.items)
+		return data.body.items
+		// .map(i => {
+		// 	return {
+		// 		date_played: new Date(i.played_at),
+		// 		artists: i.track.artists.map(a => a.name),
+		// 		album: i.track.album.name,
+		// 		name: i.track.name
+		// 	}
+		// })
 	}).catch(err=>console.log(err))
 }
 
@@ -85,6 +86,7 @@ let addTracksToSpotifyPlaylist = (req, playlistUri, trackUris) => {
 
 module.exports = {
 	getSpotifyPlaylistData: getSpotifyPlaylistData,
+	getSpotifyRecentData: getSpotifyRecentData,
 	getSpotifySearchResults: getSpotifySearchResults,
 	addTracksToSpotifyPlaylist: addTracksToSpotifyPlaylist
 }

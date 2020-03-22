@@ -5,7 +5,10 @@ module.exports = function (api) {
   	"@babel/preset-env",
     "@babel/preset-react" 
   ];
-  const plugins = [ ];
+  const plugins = [
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    "@babel/plugin-proposal-optional-chaining"
+  ];
 
   return {
     presets,

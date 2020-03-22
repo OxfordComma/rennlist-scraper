@@ -1,22 +1,19 @@
 var LastFmNode = require('lastfm').LastFmNode;
-var mongoHelper = require('./mongoDownloader.js')
 // LASTFM
 
+// Only need the API key for this one
+// so just pull from env
 let getLastFmAuth = () => {
-	var lastFmAuth = new LastFmNode({
+	return new LastFmNode({
 		api_key: process.env.lastfm_api_key,
 		secret: process.env.lastfm_secret
 	});
-	return lastFmAuth
 }
 
 let getOneMonth = (req, username) => {
-	// var fromDate = new Date(new Date().setDate(new Date().getDate()-365))
 	var fromDate = new Date(new Date().setDate(new Date().getDate()-30))
-	// console.log(fromDate)
-	
-	var lastFmAuth = getLastFmAuth()
 
+	var lastFmAuth = getLastFmAuth()
 
 	let getNext = (page, accum) => {
 		var options = {
@@ -25,6 +22,7 @@ let getOneMonth = (req, username) => {
 			limit: 200,
 			from: fromDate
 		}
+		// Turns this auth into a promise
 		return new Promise((resolve, reject) => {
 			options['handlers'] = {
 				success: function(data) {
@@ -34,6 +32,7 @@ let getOneMonth = (req, username) => {
 					reject(error);
 				}
 			}
+
 			lastFmAuth.request('user.getRecentTracks', options)
 		}).then(data => {
 
@@ -49,6 +48,8 @@ let getOneMonth = (req, username) => {
 			// console.log(tracks)
 			var oldestDate = tracks.sort((a, b) => a.listen_date - b.listen_date)[0].listen_date
 			// console.log(oldestDate)
+			// If the oldest date is newer than the searched date, 
+			// get the next page
 			if (oldestDate > fromDate) {
 				return getNext(page+1, accum)
 			}
@@ -59,19 +60,12 @@ let getOneMonth = (req, username) => {
 		})
 	}
 	return getNext(1, [])
-		// .then(data => {
-			// console.log(data)
-			// return data
-		// })
 }
 
 
 let getLastFMData = (req, username, fromPage, toPage) => {
-	// var pageLimit = pages
-	// var lastFmAuth = getLastFmAuth(req.session.passport.user.lastfm)
 	var lastFmAuth = getLastFmAuth()
 
-	// var items = []
 	let getNext = (page) => {
 		var options = {
 			user: username,

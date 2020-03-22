@@ -26,6 +26,22 @@ let getPorscheData = () => {
 	return getMongoCollection('cl_cars', 'porsche').then(db => db.find().toArray())
 }
 
+let updatePorscheData = (data, table) => {
+	return getMongoCollection('cl_cars', table)
+		.then(db => {
+			return Promise.all(data.map(d => db.updateOne(
+				{
+					'_id': d['_id']
+				}, {
+					'$set': d
+				}, {
+					'upsert': true
+				}
+			)))
+		})
+		.then(result => result.reduce((acc, curr) => acc.concat(curr.result), []))
+}
+
 let getUsernameFromDb = (username) => {
 	return getMongoCollection('music', 'users').then(db => db.find({ username: username }).toArray())
 }
@@ -44,6 +60,7 @@ let getTracksForUser = (username) => {
 
 module.exports = {
 	getPorscheData: getPorscheData,
+	updatePorscheData: updatePorscheData,
 	getUsernameFromDb: getUsernameFromDb,
 	createUser: createUser,
 	getMongoCollection: getMongoCollection,

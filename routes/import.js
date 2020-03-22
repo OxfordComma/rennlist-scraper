@@ -4,8 +4,8 @@ const router = express.Router()
 // const path = require('path')
 
 const {google} = require('googleapis');
-const scraper = require('../js/scraper.js')
-const parseTab = require('../js/parseTab.js')
+const scraper = require('../js/scripts/scraper.js')
+const parseTab = require('../js/scripts/parseTab.js')
 
 
 router.get('/', (req, res) => {
