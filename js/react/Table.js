@@ -34,7 +34,6 @@ function Body(props) {
 class ReactTable extends React.Component {
 	constructor(props) {
 		super(props);
-
 	}
 	
 	render() {		
