@@ -1,4 +1,4 @@
-id,date,timestamp,url,artist,name
+id,date,timestamp,url,artist,track
 20031701,3/17/20,00m20s,https://www.youtube.com/watch?v=Ei9xuVkbQuU,The Postal Service,We Will Become Silhouettes
 20031702,3/17/20,03m38s,https://www.youtube.com/watch?v=Ei9xuVkbQuU,Death Cab for Cutie,A Lack of Color
 20031703,3/17/20,07m46s,https://www.youtube.com/watch?v=Ei9xuVkbQuU,Death Cab for Cutie,Title Track
@@ -16,8 +16,8 @@ id,date,timestamp,url,artist,name
 20031805,3/18/20,19m44s,https://www.youtube.com/watch?v=o0EpwT9fg1I,Death Cab for Cutie,Codes and Keys
 20031806,3/18/20,23m37s,https://www.youtube.com/watch?v=o0EpwT9fg1I,Death Cab for Cutie,Passenger Seat
 20031807,3/18/20,27m48s,https://www.youtube.com/watch?v=o0EpwT9fg1I,Death Cab for Cutie,When We Drive
-20031808,3/18/20,36m23w,https://www.youtube.com/watch?v=o0EpwT9fg1I,The Monkees,Me and Magdalena
-20031809,3/18/20,41m35,https://www.youtube.com/watch?v=o0EpwT9fg1I,New Order,Ceremony
+20031808,3/18/20,36m23s,https://www.youtube.com/watch?v=o0EpwT9fg1I,The Monkees,Me and Magdalena
+20031809,3/18/20,41m35s,https://www.youtube.com/watch?v=o0EpwT9fg1I,New Order,Ceremony
 20031810,3/18/20,46m07s,https://www.youtube.com/watch?v=o0EpwT9fg1I,The Postal Service,Such Great Heights
 20031901,3/19/20,00m10s,https://www.youtube.com/watch?v=jhgssMW8L0U,Death Cab for Cutie,St. Peter's Cathedral
 20031902,3/19/20,04m04s,https://www.youtube.com/watch?v=jhgssMW8L0U,Death Cab for Cutie,Photobooth

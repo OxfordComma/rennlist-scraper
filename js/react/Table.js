@@ -4,7 +4,7 @@ import React from 'react'
 
 function Headers(props) {
 	if (props.showHeaders) {
-		<thead>
+		return <thead>
 			<tr>
 				{props.headers.map(d => {
 					return <th key={d}>{d}</th>
@@ -17,30 +17,37 @@ function Headers(props) {
 	}
 }
 
+function Body(props) {
+	return <tbody>
+		{
+			props.data.map(d => {
+				return (
+					<tr key={d[props.keyBy]} id={d[props.keyBy]} onClick={props.onClickRow} >
+						{ props.headers.map(key => <td key={key} style={{opacity: d.selected ? 1 : 0.1}}>{ d[key] }</td>) }
+					</tr>
+				)
+			})
+		}
+	</tbody>
+}
+
 class ReactTable extends React.Component {
 	constructor(props) {
 		super(props);
-		// this.onClickRow = this.props.onClickRow.bind(this)
 
 	}
 	
-	render() {
-		// var key = this.props.key
-		
+	render() {		
 		return (
 			<table>
-				<Headers headers={this.props.headers} showHeaders={this.props.showHeaders}/>
-				<tbody>
-					{
-						this.props.data.map(d => {
-							return (
-								<tr key={d[this.props.keyBy]} id={d[this.props.keyBy]} onClick={this.props.onClickRow}>
-									{ this.props.headers.map(key => <td key={key}>{ d[key] }</td>) }
-								</tr>
-							)
-						})
-					}
-				</tbody>
+				<Headers 
+					headers={this.props.headers} 
+					showHeaders={this.props.showHeaders}/>
+				<Body 
+					headers={this.props.headers} 
+					data={this.props.data} 
+					keyBy={this.props.keyBy} 
+					onClickRow={this.props.onClickRow}/>
 			</table>
 		)
 	}
