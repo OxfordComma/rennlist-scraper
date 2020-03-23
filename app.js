@@ -19,7 +19,7 @@ var guitarTabImportRouter = require('./routes/import')
 var treeRouter = require('./routes/tree')
 var covidRouter = require('./routes/covid19')
 var gibbRouter = require('./routes/gibbstack')
-var scraperRouter = require('./routes/scraper')
+// var scraperRouter = require('./routes/scraper')
 
 var app = express();
 
@@ -60,7 +60,7 @@ app.use('/import', guitarTabImportRouter)
 app.use('/tree', treeRouter)
 app.use('/covid19', covidRouter)
 app.use('/gibbstack', gibbRouter)
-app.use('/scraper', scraperRouter)
+// app.use('/scraper', scraperRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
