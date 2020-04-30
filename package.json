@@ -22,7 +22,7 @@
     "googleapis": "^46.0.0",
     "helmet": "^3.21.2",
     "http-errors": "~1.6.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "json": "^9.0.6",
     "lastfm": "^0.9.3",
     "mongodb": "^3.5.1",
