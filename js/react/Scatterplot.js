@@ -35,13 +35,11 @@ class Scatterplot extends React.Component {
 
 	}
 	updatePoints() {
-
 		// Add tip
 		let tip = d3Tip().attr('class', 'd3-tip').html(d => d['info']);
 		
 		// Add hovers using the d3-tip library        
 		d3.select(this.chartAreaRef.current).call(tip);
-
 
 		// Create the transparent background width
 		let background = d3.select(this.chartAreaRef.current).selectAll('rect').data([null])
@@ -64,6 +62,7 @@ class Scatterplot extends React.Component {
 		// Use the .enter() method to get your entering elements, and assign their positions
 		let circlesEnter = circles
 			.enter().append('circle')
+			.attr('class', 'chart-item')
 			.on('mouseover', tip.show)
 			.on('mouseout', tip.hide)
 			.attr('r', this.props.radius)				
@@ -76,14 +75,19 @@ class Scatterplot extends React.Component {
 
 		circlesEnter.merge(circles)
 			.on('click', d => this.props.onClickChartItem(d))
-			.transition().duration(800)
-			.attr('fill', (d) => this.props.colorScale(this.props.legendBy(d)) )
+			.transition().duration(this.props.transitionSpeed)
+			.attr('fill', (d) => 
+				this.props.legendBy == 'color' ? 
+				d['color'] : 
+				this.props.colorScale(d[this.props.legendBy]) 
+				)
 			.attr('cx', (d) => 
 				isNaN(this.xScale(d[this.props.xValue])) ? 0 : this.xScale(d[this.props.xValue]) )
 			.attr('cy', (d) => 
 				isNaN(this.yScale(d[this.props.yValue])) ? 0 : this.yScale(d[this.props.yValue]) )
 			.attr('pointer-events', d => d.selected == true ? 'visiblePainted' : 'none')
-			.style('fill-opacity', d => d.selected == true ? 1 : 0.05)
+			.attr('_id', d => d._id)
+			.style('fill-opacity', d => d.selected == true ? 1 : 0.03)
 			.style('stroke', 'black')
 			.style('stroke-width', 0.5)
 			.style('stroke-opacity', d => d.selected == true ? 1 : 0)
@@ -91,11 +95,11 @@ class Scatterplot extends React.Component {
 
 		// Use the .exit() and .remove() methods to remove elements that are no longer in the data
 		circles.exit()
-			.transition().duration(800)
-				.attr('cx', (d) => 
-					isNaN(this.xScale(d[this.props.xValue])) ? 0 : this.xScale(d[this.props.xValue]) )
-				.attr('cy', (d) => 
-					isNaN(this.yScale(d[this.props.yValue])) ? 0 : this.yScale(d[this.props.yValue]) )
+			.transition().duration(this.props.transitionSpeed)
+				// .attr('cx', (d) => 
+					// isNaN(this.xScale(d[this.props.xValue])) ? 0 : this.xScale(d[this.props.xValue]) )
+				// .attr('cy', (d) => 
+					// isNaN(this.yScale(d[this.props.yValue])) ? 0 : this.yScale(d[this.props.yValue]) )
 				.style('fill-opacity', 0)
 			.remove();
 
@@ -150,11 +154,11 @@ class Scatterplot extends React.Component {
 			.tickFormat(number => d3.format('.2s')(number).replace('.0', ''));
 
 		d3.select(this.xAxisRef.current)
-			.transition().duration(800)
+			.transition().duration(350)
 			.call(xAxisFunction);
 
 		d3.select(this.yAxisRef.current)
-			.transition().duration(800)
+			.transition().duration(350)
 			.call(yAxisFunction);
 	}
 	update() {

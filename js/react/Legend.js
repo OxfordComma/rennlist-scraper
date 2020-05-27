@@ -42,7 +42,10 @@ class Legend extends React.Component {
 		legendItemsEnter.append('circle')
 			.merge(legendItems.select('circle'))
 				.attr('r', this.props.radius)
-				.attr('fill', this.props.colorScale)
+				.attr('fill', d => 
+					this.props.legendBy == 'color' ? 
+					d : 
+					this.props.colorScale(d))
 				.attr('fill-opacity', 1)
 		
 		legendItemsEnter.append('text')
@@ -54,7 +57,7 @@ class Legend extends React.Component {
 
 
 		legendItemsEnter.merge(legendItems)
-			.transition().duration(800)
+			.transition().duration(350)
 			.attr('transform', (d, i) => {
 				var textLengths = d3.selectAll('.legend-item').selectAll('text').nodes().map(n => n.getComputedTextLength())
 				//                  Each circle + some padding

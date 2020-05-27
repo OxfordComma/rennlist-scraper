@@ -1,25 +1,15 @@
+require('dotenv').config()
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var passport = require('passport')
 var helmet = require('helmet')
-require('dotenv').config()
 var session = require('express-session')
 
 
 var indexRouter = require('./routes/index');
-var authRouter = require('./routes/auth')
 var carsRouter = require('./routes/cars');
-var lastFmRouter = require('./routes/lastfm')
-var dataRouter = require('./routes/data')
-var updateRouter = require('./routes/update')
-var guitarTabImportRouter = require('./routes/import')
-var treeRouter = require('./routes/tree')
-var covidRouter = require('./routes/covid19')
-var gibbRouter = require('./routes/gibbstack')
-// var scraperRouter = require('./routes/scraper')
 
 var app = express();
 
@@ -29,7 +19,7 @@ app.use(session({
   name: 'rennlist_scraper',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true },
+  cookie: { secure: false },
   httpOnly: true
 }))
 
@@ -42,8 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser('rennlist_scraper'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(helmet())
 
 
@@ -51,16 +39,7 @@ app.use(helmet())
 app.set('json spaces', 2)
 
 app.use('/', indexRouter);
-app.use('/auth', authRouter)
 app.use('/cars', carsRouter)
-app.use('/lastfm', lastFmRouter)
-app.use('/data', dataRouter)
-app.use('/update', updateRouter)
-app.use('/import', guitarTabImportRouter)
-app.use('/tree', treeRouter)
-app.use('/covid19', covidRouter)
-app.use('/gibbstack', gibbRouter)
-// app.use('/scraper', scraperRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

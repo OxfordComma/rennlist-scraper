@@ -5,13 +5,15 @@ const GraphSidebar = ({ options, data, filteredData, onCheckChange }) => (
 	<form id='legendoptions'>
 		{
 			options.map(opt => {
-				var unique = [...new Set(data.map(item => item[opt]))].sort()
+				var unique = [...new Set(data.map(item => item[opt]))].filter(d => d).sort()
+				// console.log(unique)
 				return (
 					<div className='checkbox' key={opt}>
 						<ul>
 							{opt}
 							{
 								unique.map(u => {
+									// console.log(u)
 									return (
 										<li key={u}>
 											<Checkbox

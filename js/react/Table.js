@@ -2,11 +2,11 @@ import React from 'react'
 // import { useTable, useSortBy, useFilters, useRowSelect } from 'react-table'
 
 
-function Headers(props) {
-	if (props.showHeaders) {
+function Headings(props) {
+	if (props.columns.length > 0) {
 		return <thead>
 			<tr>
-				{props.headers.map(d => {
+				{props.columns.map(d => {
 					return <th key={d}>{d}</th>
 				})}
 			</tr>
@@ -22,8 +22,15 @@ function Body(props) {
 		{
 			props.data.map(d => {
 				return (
-					<tr key={d[props.keyBy]} id={d[props.keyBy]} onClick={props.onClickRow} >
-						{ props.headers.map(key => <td key={key} style={{opacity: d.selected ? 1 : 0.1}}>{ d[key] }</td>) }
+					<tr 
+						key={d[props.keyBy]} 
+						id={d[props.keyBy]} 
+						onClick={props.onClickRow}>
+						{ props.columns.map(key => 
+							<td 
+								key={key} 
+								style={{opacity: d.selected ? 1 : 0.1}} 
+								onClick={props.onClickCell}>{ d[key] }</td>) }
 					</tr>
 				)
 			})
@@ -39,14 +46,14 @@ class ReactTable extends React.Component {
 	render() {		
 		return (
 			<table>
-				<Headers 
-					headers={this.props.headers} 
-					showHeaders={this.props.showHeaders}/>
+				<Headings 
+					columns={this.props.columns} />
 				<Body 
-					headers={this.props.headers} 
+					columns={this.props.columns} 
 					data={this.props.data} 
 					keyBy={this.props.keyBy} 
-					onClickRow={this.props.onClickRow}/>
+					onClickRow={this.props.onClickRow}
+					onClickCell={this.props.onClickCell}/>
 			</table>
 		)
 	}
